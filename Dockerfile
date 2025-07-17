@@ -7,8 +7,12 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install --production
+
+# Install all dependencies (including devDependencies)
+RUN npm install
+
+# Ensure binaries are executable (fixes Windows to Linux permission issues)
+RUN chmod +x node_modules/.bin/* || true
 
 # Copy the rest of the application code
 COPY . .
