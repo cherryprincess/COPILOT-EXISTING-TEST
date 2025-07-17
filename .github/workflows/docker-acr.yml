@@ -15,6 +15,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Show cross-spawn version in lock file
+        run: cat package-lock.json | grep -A 5 '"cross-spawn":'
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -37,6 +40,10 @@ jobs:
           tags: |
             vite-react-app:local
           no-cache: true
+          cache-from: type=none
+          cache-to: type=none
+          build-args: |
+            BUILDKIT_INLINE_CACHE=0
 
       - name: Install Trivy
         run: |
@@ -65,6 +72,10 @@ jobs:
             ${{ secrets.ACR_LOGIN_SERVER }}/vite-react-app:latest
             ${{ secrets.ACR_LOGIN_SERVER }}/vite-react-app:${{ github.run_id }}
           no-cache: true
+          cache-from: type=none
+          cache-to: type=none
+          build-args: |
+            BUILDKIT_INLINE_CACHE=0
 
   deploy-to-aks:
     runs-on: ubuntu-latest
