@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vite-react-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vite-react-app
+  template:
+    metadata:
+      labels:
+        app: vite-react-app
+    spec:
+      containers:
+        - name: vite-react-app
+          image: <ACR_LOGIN_SERVER>/vite-react-app:<BUILD_ID>
+          ports:
+            - containerPort: 5173
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vite-react-app
+spec:
+  type: ClusterIP
+  selector:
+    app: vite-react-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5173

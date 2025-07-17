@@ -1,0 +1,41 @@
+# DevOps Pipeline and Kubernetes Deployment Conversation Log
+
+## 1. Add Dockerfile
+- Added a Dockerfile for a Vite-based React app using Node 20-alpine.
+
+## 2. Add GitHub Actions Workflow for ACR
+- Created `.github/workflows/docker-acr.yml` to build and push Docker image to Azure Container Registry (ACR).
+- Required secrets: `ACR_LOGIN_SERVER`, `ACR_USERNAME`, `ACR_PASSWORD`.
+
+## 3. Tag Docker Image with Build ID
+- Modified workflow to tag Docker images with both `latest` and the GitHub Actions build ID (`github.run_id`).
+
+## 4. Integrate Trivy Security Scan
+- Added Trivy steps to install and scan the Docker image for vulnerabilities before pushing to ACR.
+- The pipeline fails if critical or high vulnerabilities are found.
+
+## 5. Add Kubernetes Deployment and Service YAML
+- Created `k8s-deployment.yaml` with Deployment and ClusterIP Service objects.
+- Image reference uses `<ACR_LOGIN_SERVER>/vite-react-app:latest` (later templated).
+
+## 6. Split Workflow: Build and Deploy Jobs
+- Workflow split into two jobs:
+  - `build-and-push`: Builds, scans, and pushes the Docker image.
+  - `deploy-to-aks`: Deploys to AKS after a successful build.
+- Required additional secrets: `AZURE_CREDENTIALS`, `AKS_RESOURCE_GROUP`, `AKS_CLUSTER_NAME`.
+
+## 7. Deploy to Existing Namespace
+- Modified deploy job to use `kubectl apply -f ... --namespace ${{ secrets.AKS_NAMESPACE }}`.
+- Required secret: `AKS_NAMESPACE`.
+
+## 8. Use Build ID in Image Reference
+- Updated `k8s-deployment.yaml` to use `<BUILD_ID>` as the image tag placeholder.
+- Workflow replaces `<BUILD_ID>` with the actual build ID during deployment.
+
+## 9. Error Handling
+- User reported: "Internal server error. Correlation ID: 28556931-eb47-418d-be98-77adaec6ac30 The job was not acquired by Runner of type hosted even after multiple attempts."
+- This is an Azure/GitHub runner infrastructure issue, not related to pipeline YAML or code.
+
+---
+
+This document summarizes the DevOps automation and Kubernetes deployment conversation, including all major configuration and workflow changes.
