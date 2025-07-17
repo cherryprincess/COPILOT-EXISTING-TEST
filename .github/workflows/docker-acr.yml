@@ -36,6 +36,7 @@ jobs:
           push: false
           tags: |
             vite-react-app:local
+          no-cache: true
 
       - name: Install Trivy
         run: |
@@ -63,6 +64,7 @@ jobs:
           tags: |
             ${{ secrets.ACR_LOGIN_SERVER }}/vite-react-app:latest
             ${{ secrets.ACR_LOGIN_SERVER }}/vite-react-app:${{ github.run_id }}
+          no-cache: true
 
   deploy-to-aks:
     runs-on: ubuntu-latest
