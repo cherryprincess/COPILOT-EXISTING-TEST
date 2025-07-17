@@ -8,14 +8,15 @@ WORKDIR /app
 COPY package*.json ./
 
 
+
 # Install all dependencies (including devDependencies)
 RUN npm install
 
-# Ensure binaries are executable (fixes Windows to Linux permission issues)
-RUN chmod +x node_modules/.bin/* || true
-
 # Copy the rest of the application code
 COPY . .
+
+# Ensure binaries are executable (fixes Windows to Linux permission issues)
+RUN chmod +x node_modules/.bin/* || true
 
 # Build the app (for Vite projects)
 RUN npm run build
