@@ -40,8 +40,6 @@ jobs:
           tags: |
             vite-react-app:local
           no-cache: true
-          cache-from: type=none
-          cache-to: type=none
           build-args: |
             BUILDKIT_INLINE_CACHE=0
 
@@ -72,8 +70,6 @@ jobs:
             ${{ secrets.ACR_LOGIN_SERVER }}/vite-react-app:latest
             ${{ secrets.ACR_LOGIN_SERVER }}/vite-react-app:${{ github.run_id }}
           no-cache: true
-          cache-from: type=none
-          cache-to: type=none
           build-args: |
             BUILDKIT_INLINE_CACHE=0
 
