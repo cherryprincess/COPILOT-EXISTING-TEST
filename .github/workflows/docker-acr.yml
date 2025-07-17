@@ -43,6 +43,9 @@ jobs:
           build-args: |
             BUILDKIT_INLINE_CACHE=0
 
+      - name: Verify cross-spawn version in Docker image
+        run: docker run --rm vite-react-app:local npm list cross-spawn
+
       - name: Install Trivy
         run: |
           sudo apt-get update && \
