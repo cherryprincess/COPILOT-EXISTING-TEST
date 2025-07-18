@@ -15,8 +15,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Show cross-spawn version in lock file
-        run: cat package-lock.json | grep -A 5 '"cross-spawn":'
+      - name: Show execa version in lock file
+        run: cat package-lock.json | grep -A 5 '"execa":'
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -43,8 +43,8 @@ jobs:
           build-args: |
             BUILDKIT_INLINE_CACHE=0
 
-      - name: Verify cross-spawn version in Docker image
-        run: docker run --rm vite-react-app:local npm list cross-spawn
+      - name: Verify execa version in Docker image
+        run: docker run --rm vite-react-app:local npm list execa
 
       - name: Install Trivy
         run: |

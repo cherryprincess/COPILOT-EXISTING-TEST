@@ -7,9 +7,6 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Force install specific cross-spawn version
-RUN npm install cross-spawn@7.0.6 --save-exact
-
 # Install all dependencies (including devDependencies)
 RUN npm install
 
