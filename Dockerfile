@@ -7,7 +7,9 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install all dependencies (including devDependencies)
+# Clear npm cache and install dependencies with latest versions
+RUN npm cache clean --force
+RUN rm -f package-lock.json
 RUN npm install
 
 # Copy the rest of the application code
